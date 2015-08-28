@@ -18,6 +18,12 @@
       <div class="large-3 columns day"></div>
       <div class="large-3 columns day"></div>
     </div>
+    <!-- <div class="row date-wrapper">
+      <div class="large-3 columns date"></div>
+      <div class="large-3 columns date"></div>
+      <div class="large-3 columns date"></div>
+      <div class="large-3 columns date"></div>
+    </div> -->
     <div class="row weather-line temp-high">
       <div id="weather-num-wrapper-high-0" class="large-3 columns weather-num-wrapper"></div>
       <div id="weather-num-wrapper-high-1" class="large-3 columns weather-num-wrapper"></div>
@@ -79,6 +85,7 @@ $(document).ready(function() {
 
       $($('.wind-speed')[i]).html(windSpeed+' <span class="small-txt">mph wind</span>');
       $($('.day')[i]).html(day);
+      // $($('.date')[i]).html(date);
       $($('.condition')[i]).html(text);
 
       $('body').css({'background-color': 'rgba(255, 255, 255, 0)'});

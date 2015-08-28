@@ -50,7 +50,12 @@ body {
   font-size: 11px;
 }
 
-
+.temp-high {
+  margin-bottom: 10px;
+}
+.temp-low {
+  margin-bottom: 5px;
+}
 .weather-num-wrapper {
   height: 21px;
   overflow: hidden;
