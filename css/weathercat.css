@@ -15,6 +15,7 @@ body {
   opacity: 0.8;
   font-size: 21px;
   letter-spacing: 2px;
+  text-align: center;
 }
 .weather-line:first-of-type {
   margin-top: 11%;
@@ -30,7 +31,7 @@ body {
   color: #2b2e3e;
   background: transparent;
   letter-spacing: 4px;
-  margin-bottom: 60px;
+  margin-bottom: 80px;
   font-family: 'Roboto', sans-serif;
 }
 .input-wrapper {
