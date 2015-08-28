@@ -2,27 +2,24 @@
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <link rel="stylesheet" href="css/foundation.css">
-    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lora|Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/weathercat.css">
   </head>
   <body>
     <div class="row weather-line input-wrapper">
-      <div class="large-4 large-offset-1 columns">
+      <div class="large-4 columns">
         <input type="text" placeholder="Where are you?" class="location-input" autofocus />
       </div>
     </div>
 
-    <div class="row">
-      <div class="large-7 large-offset-1 columns weather-num-wrapper"></div>
-    </div>
-    <!-- <div class="row weather-line">
-      <div class="large-7 large-offset-1 columns temp"></div>
-    </div> -->
     <div class="row weather-line">
-      <div class="large-7 large-offset-1 columns wind-speed"></div>
+      <div class="large-7 columns weather-num-wrapper"></div>
     </div>
     <div class="row weather-line">
-      <div class="large-7 large-offset-1 columns condition"></div>
+      <div class="large-7 columns wind-speed"></div>
+    </div>
+    <div class="row weather-line">
+      <div class="large-7 columns condition"></div>
     </div>
 
   </body>
@@ -71,7 +68,7 @@ $(document).ready(function() {
       $el.append('<span class="num num-'+i+'">'+i+'</span>');
     }
     var height = $el.height();
-    var height = ($('.weather-nums').last().height() - 8) * -1;
+    var height = ($('.weather-nums').last().height() + 7) * -1;
     $el.animate({'position': 'relative', 'top': height+'px'}, delay);
   }
 
