@@ -7,11 +7,17 @@
   </head>
   <body>
     <div class="row weather-line input-wrapper">
-      <div class="small-5 small-centered columns">
+      <div class="large-8 large-centered columns">
         <input type="text" placeholder="Where are you?" class="location-input" autofocus />
       </div>
     </div>
 
+    <div class="row weather-line">
+      <div class="large-3 columns day"></div>
+      <div class="large-3 columns day"></div>
+      <div class="large-3 columns day"></div>
+      <div class="large-3 columns day"></div>
+    </div>
     <div class="row weather-line">
       <div class="large-3 columns weather-num-wrapper"></div>
       <div class="large-3 columns weather-num-wrapper"></div>
@@ -36,34 +42,65 @@
 
 <script>
 $(document).ready(function() {
+
+  var successWeather = function(res) {
+    console.log(res);
+    var results = res.query.results.channel;
+    var condition = results.item.condition;
+    var temp = condition.temp;
+    var text = condition.text;
+    var date = condition.date;
+    var windSpeed = results.wind.speed;
+
+    $('.wind-speed').html(windSpeed+' <span class="small-txt">mph wind</span>');
+    $('.condition').html(text);
+
+    $('body').css({'background-color': 'rgba(255, 255, 255, 0)'});
+    $('.weather-line').fadeIn();
+
+    console.log(temp);
+    var tempStr = temp.toString();
+    for(var i = 0; i < tempStr.length; i++) {
+      var tempSingleDigit = tempStr[i];
+      var lastDigit = (i === tempStr.length - 1);
+      displayIncrementedNum(tempSingleDigit, 1000, lastDigit);
+    }
+  }
+
+  var successWeather2 = function(res) {
+    console.log(res);
+    var results = res.query.results.channel;
+    var forecast = results.item.forecast;
+
+    for(var i = 0; i < forecast.length - 1; i++) {
+      var temp = forecast[i].high;
+      var text = forecast[i].text;
+      var date = forecast[i].date;
+      var day = forecast[i].day;
+      var windSpeed = results.wind.speed;
+
+      $($('.wind-speed')[i]).html(windSpeed+' <span class="small-txt">mph wind</span>');
+      $($('.day')[i]).html(day);
+      $($('.condition')[i]).html(text);
+
+      $('body').css({'background-color': 'rgba(255, 255, 255, 0)'});
+      $('.weather-line').fadeIn();
+
+      console.log(temp);
+      var tempStr = temp.toString();
+      for(var j = 0; j < tempStr.length; j++) {
+        var tempSingleDigit = tempStr[j];
+        var lastDigit = (j === tempStr.length - 1);
+        displayIncrementedNum(tempSingleDigit, 1000, lastDigit);
+      }
+    }
+  }
+
   var getWeather = function(query) {
     $.ajax({
       url: 'https://query.yahooapis.com/v1/public/yql?q='+query+'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys',
       type: 'GET',
-      success: function(res) {
-        console.log(res);
-        var results = res.query.results.channel;
-        var condition = results.item.condition;
-        var temp = condition.temp;
-        var text = condition.text;
-        var date = condition.date;
-        var windSpeed = results.wind.speed;
-
-        $('.wind-speed').html(windSpeed+' <span class="small-txt">mph wind</span>');
-        $('.condition').html(text);
-
-        $('body').css({'background-color': 'rgba(255, 255, 255, 0)'});
-        $('.weather-line').fadeIn();
-
-        console.log(temp);
-        var tempStr = temp.toString();
-        for(var i = 0; i < tempStr.length; i++) {
-          var tempSingleDigit = tempStr[i];
-          var lastDigit = (i === tempStr.length - 1);
-          displayIncrementedNum(tempSingleDigit, 1000, lastDigit);
-        }
-
-      }
+      success: successWeather2
     });
   }
 

@@ -47,13 +47,17 @@ body {
   height: 21px;
   overflow: hidden;
   margin-bottom: 5px;
+  text-align: center;
 }
 .weather-nums {
   position: relative;
   display: inline-block;
-  float: left;
   margin-top: 20px;
+  float: left;
 }
+/*.weather-nums:not(:first-of-type) {
+  float: left;
+}*/
 .num {
   display: block;
   margin: -13px 0;
