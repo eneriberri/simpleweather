@@ -12,17 +12,17 @@
       </div>
     </div>
 
-    <div class="row weather-line">
+    <div class="row weather-line day-wrapper">
       <div class="large-3 columns day"></div>
       <div class="large-3 columns day"></div>
       <div class="large-3 columns day"></div>
       <div class="large-3 columns day"></div>
     </div>
     <div class="row weather-line">
-      <div class="large-3 columns weather-num-wrapper"></div>
-      <div class="large-3 columns weather-num-wrapper"></div>
-      <div class="large-3 columns weather-num-wrapper"></div>
-      <div class="large-3 columns weather-num-wrapper"></div>
+      <div id="weather-num-wrapper-0" class="large-3 columns weather-num-wrapper"></div>
+      <div id="weather-num-wrapper-1" class="large-3 columns weather-num-wrapper"></div>
+      <div id="weather-num-wrapper-2" class="large-3 columns weather-num-wrapper"></div>
+      <div id="weather-num-wrapper-3" class="large-3 columns weather-num-wrapper"></div>
     </div>
     <div class="row weather-line">
       <div class="large-3 columns wind-speed"></div>
@@ -71,6 +71,8 @@ $(document).ready(function() {
     console.log(res);
     var results = res.query.results.channel;
     var forecast = results.item.forecast;
+    var lastDigit = false;
+    var weatherWrapperIndex = 0;
 
     for(var i = 0; i < forecast.length - 1; i++) {
       var temp = forecast[i].high;
@@ -89,11 +91,17 @@ $(document).ready(function() {
       console.log(temp);
       var tempStr = temp.toString();
       for(var j = 0; j < tempStr.length; j++) {
+        console.log(lastDigit);
+        if(lastDigit) {
+          weatherWrapperIndex++;
+        }
+
         var tempSingleDigit = tempStr[j];
-        var lastDigit = (j === tempStr.length - 1);
-        displayIncrementedNum(tempSingleDigit, 1000, lastDigit);
+        lastDigit = (j === tempStr.length - 1);
+        displayIncrementedNum(tempSingleDigit, 1000, lastDigit, weatherWrapperIndex);
       }
     }
+    // $('.num').append('<span class="small-txt">high</span>');
   }
 
   var getWeather = function(query) {
@@ -104,14 +112,18 @@ $(document).ready(function() {
     });
   }
 
-  var displayIncrementedNum = function(num,delay,lastDigit) {
-    $('.weather-num-wrapper').append('<div class="weather-nums"></div>');
+  var displayIncrementedNum = function(num,delay,lastDigit,index) {
+    $('#weather-num-wrapper-'+index).append('<div class="weather-nums"></div>');
     var lastIndexOfEl = $('.weather-nums').length - 1;
     var $el = $($('.weather-nums')[lastIndexOfEl]);
+    var suffix = '';
     for(var i = 0; i <= num; i++) {
       //Append degree symbol to last digit
-      if(lastDigit && i == num) i += '&#176;';
-      $el.append('<span class="num num-'+i+'">'+i+'</span>');
+      if(lastDigit && i == num) {
+        i += '&#176;';
+        suffix = 'high';
+      }
+      $el.append('<span class="num num-'+i+'">'+i+'<span class="small-txt">'+suffix+'</span></span>');
     }
     var height = $el.height();
     var height = ($('.weather-nums').last().height() + 7) * -1;

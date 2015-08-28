@@ -7,7 +7,8 @@ body {
   color: #2b2e3e;
   background-color: rgba(255, 255, 255, 1);
   background-blend-mode: color;
-  font-family: 'Lora', serif;
+  font-family: 'Roboto', sans-serif;
+  /*font-family: 'Lora', serif;*/
   overflow-x: hidden;
 }
 
@@ -18,7 +19,8 @@ body {
   text-align: center;
 }
 .weather-line:first-of-type {
-  margin-top: 11%;
+  margin-top: 8%;
+  margin-bottom: 10px;
 }
 .weather-line:not(:first-of-type) {
   display: none;
@@ -32,12 +34,18 @@ body {
   background: transparent;
   letter-spacing: 4px;
   margin-bottom: 80px;
-  font-family: 'Roboto', sans-serif;
+  /*font-family: 'Roboto', sans-serif;*/
 }
 .input-wrapper {
   position: relative;
 }
 
+.day-wrapper {
+  margin-bottom: 20px;
+}
+.day {
+  font-family: 'Lora', serif;
+}
 .small-txt {
   font-size: 11px;
 }
@@ -46,18 +54,16 @@ body {
 .weather-num-wrapper {
   height: 21px;
   overflow: hidden;
-  margin-bottom: 5px;
   text-align: center;
+  padding-left: 90px;
 }
 .weather-nums {
   position: relative;
   display: inline-block;
   margin-top: 20px;
   float: left;
+  text-align: initial;
 }
-/*.weather-nums:not(:first-of-type) {
-  float: left;
-}*/
 .num {
   display: block;
   margin: -13px 0;
