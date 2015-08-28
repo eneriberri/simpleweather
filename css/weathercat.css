@@ -1,0 +1,61 @@
+body {
+  background: url('../images/clouds.png') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: #2b2e3e;
+  background-color: rgba(255, 255, 255, 1);
+  background-blend-mode: color;
+  font-family: 'Roboto', sans-serif;
+  overflow-x: hidden;
+}
+
+.weather-line {
+  opacity: 0.8;
+  font-size: 48px;
+  letter-spacing: 4px;
+}
+.weather-line:first-of-type {
+  margin-top: 11%;
+}
+.weather-line:not(:first-of-type) {
+  display: none;
+}
+
+.location-input {
+  outline: none;
+  border: none;
+  font-size: 48px;
+  color: #2b2e3e;
+  background: transparent;
+  letter-spacing: 4px;
+  margin-bottom: 60px;
+}
+.input-wrapper {
+  position: relative;
+}
+
+.small-txt {
+  font-size: 22px;
+}
+
+
+.weather-num-wrapper {
+  height: 48px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.weather-nums {
+  position: relative;
+  display: inline-block;
+  float: left;
+  margin-top: 20px;
+}
+.num {
+  display: block;
+  margin: -30px 0;
+  font-size: 48px;
+  opacity: 0.8;
+  margin-right: 5px;
+}
