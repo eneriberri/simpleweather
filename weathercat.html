@@ -18,11 +18,17 @@
       <div class="large-3 columns day"></div>
       <div class="large-3 columns day"></div>
     </div>
-    <div class="row weather-line">
-      <div id="weather-num-wrapper-0" class="large-3 columns weather-num-wrapper"></div>
-      <div id="weather-num-wrapper-1" class="large-3 columns weather-num-wrapper"></div>
-      <div id="weather-num-wrapper-2" class="large-3 columns weather-num-wrapper"></div>
-      <div id="weather-num-wrapper-3" class="large-3 columns weather-num-wrapper"></div>
+    <div class="row weather-line temp-high">
+      <div id="weather-num-wrapper-high-0" class="large-3 columns weather-num-wrapper"></div>
+      <div id="weather-num-wrapper-high-1" class="large-3 columns weather-num-wrapper"></div>
+      <div id="weather-num-wrapper-high-2" class="large-3 columns weather-num-wrapper"></div>
+      <div id="weather-num-wrapper-high-3" class="large-3 columns weather-num-wrapper"></div>
+    </div>
+    <div class="row weather-line temp-low">
+      <div id="weather-num-wrapper-low-0" class="large-3 columns weather-num-wrapper"></div>
+      <div id="weather-num-wrapper-low-1" class="large-3 columns weather-num-wrapper"></div>
+      <div id="weather-num-wrapper-low-2" class="large-3 columns weather-num-wrapper"></div>
+      <div id="weather-num-wrapper-low-3" class="large-3 columns weather-num-wrapper"></div>
     </div>
     <div class="row weather-line">
       <div class="large-3 columns wind-speed"></div>
@@ -43,39 +49,29 @@
 <script>
 $(document).ready(function() {
 
-  var successWeather = function(res) {
-    console.log(res);
-    var results = res.query.results.channel;
-    var condition = results.item.condition;
-    var temp = condition.temp;
-    var text = condition.text;
-    var date = condition.date;
-    var windSpeed = results.wind.speed;
-
-    $('.wind-speed').html(windSpeed+' <span class="small-txt">mph wind</span>');
-    $('.condition').html(text);
-
-    $('body').css({'background-color': 'rgba(255, 255, 255, 0)'});
-    $('.weather-line').fadeIn();
-
-    console.log(temp);
+  var displayTemp = function(temp,lastDigit,weatherWrapperIndex,suffix) {
     var tempStr = temp.toString();
-    for(var i = 0; i < tempStr.length; i++) {
-      var tempSingleDigit = tempStr[i];
-      var lastDigit = (i === tempStr.length - 1);
-      displayIncrementedNum(tempSingleDigit, 1000, lastDigit);
+    for(var j = 0; j < tempStr.length; j++) {
+      if(lastDigit) weatherWrapperIndex++;
+      lastDigit = (j === tempStr.length - 1);
+      displayIncrementedNum(tempStr[j],1000,lastDigit,weatherWrapperIndex,'high');
     }
   }
 
-  var successWeather2 = function(res) {
+  var successWeather = function(res) {
     console.log(res);
     var results = res.query.results.channel;
     var forecast = results.item.forecast;
-    var lastDigit = false;
-    var weatherWrapperIndex = 0;
 
+    var lastDigit = false;
+    var lastDigit2 = false;
+    var weatherWrapperIndex = 0;
+    var weatherWrapperIndex2 = 0;
+
+    //Loop through forecast results
     for(var i = 0; i < forecast.length - 1; i++) {
-      var temp = forecast[i].high;
+      var high = forecast[i].high;
+      var low = forecast[i].low;
       var text = forecast[i].text;
       var date = forecast[i].date;
       var day = forecast[i].day;
@@ -88,45 +84,48 @@ $(document).ready(function() {
       $('body').css({'background-color': 'rgba(255, 255, 255, 0)'});
       $('.weather-line').fadeIn();
 
-      console.log(temp);
-      var tempStr = temp.toString();
+      console.log('high: ' + high);
+      console.log('low: ' + low);
+      var tempStr = high.toString();
+      //Loop through temperature digits
       for(var j = 0; j < tempStr.length; j++) {
-        console.log(lastDigit);
-        if(lastDigit) {
-          weatherWrapperIndex++;
-        }
-
-        var tempSingleDigit = tempStr[j];
+        if(lastDigit) weatherWrapperIndex++;
         lastDigit = (j === tempStr.length - 1);
-        displayIncrementedNum(tempSingleDigit, 1000, lastDigit, weatherWrapperIndex);
+        displayIncrementedNum(tempStr[j],1000,lastDigit,weatherWrapperIndex,'high');
       }
+
+      var tempStr = low.toString();
+      for(var j = 0; j < tempStr.length; j++) {
+        if(lastDigit2) weatherWrapperIndex2++;
+        lastDigit2 = (j === tempStr.length - 1);
+        displayIncrementedNum(tempStr[j],1000,lastDigit2,weatherWrapperIndex2,'low');
+      }
+      // break;
     }
-    // $('.num').append('<span class="small-txt">high</span>');
   }
 
   var getWeather = function(query) {
     $.ajax({
       url: 'https://query.yahooapis.com/v1/public/yql?q='+query+'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys',
       type: 'GET',
-      success: successWeather2
+      success: successWeather
     });
   }
 
-  var displayIncrementedNum = function(num,delay,lastDigit,index) {
-    $('#weather-num-wrapper-'+index).append('<div class="weather-nums"></div>');
-    var lastIndexOfEl = $('.weather-nums').length - 1;
-    var $el = $($('.weather-nums')[lastIndexOfEl]);
-    var suffix = '';
+  var displayIncrementedNum = function(num,delay,lastDigit,index,suffix) {
+    $('#weather-num-wrapper-'+suffix+'-'+index).append('<div class="weather-nums"></div>');
+    var lastIndexOfEl = $('.temp-'+suffix+' .weather-nums').length - 1;
+    var $el = $($('.temp-'+suffix+' .weather-nums')[lastIndexOfEl]);
+    var tempSuffix = '';
     for(var i = 0; i <= num; i++) {
       //Append degree symbol to last digit
       if(lastDigit && i == num) {
         i += '&#176;';
-        suffix = 'high';
+        tempSuffix = suffix;
       }
-      $el.append('<span class="num num-'+i+'">'+i+'<span class="small-txt">'+suffix+'</span></span>');
+      $el.append('<span class="num num-'+i+'">'+i+'<span class="small-txt">'+tempSuffix+'</span></span>');
     }
-    var height = $el.height();
-    var height = ($('.weather-nums').last().height() + 7) * -1;
+    var height = ($el.height() + 7) * -1;
     $el.animate({'position': 'relative', 'top': height+'px'}, delay);
   }
 
